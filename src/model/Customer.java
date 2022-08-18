@@ -10,8 +10,8 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
-    private String emailRegex = "^(.+)@(.+).com$";
-    Pattern pattern = Pattern.compile(emailRegex);
+    private static final String emailRegex = "^(.+)@(.+).com$";
+    private static final Pattern pattern = Pattern.compile(emailRegex);
     private List<Reservation> reservations = new ArrayList<Reservation>();
 
     // Constructor
