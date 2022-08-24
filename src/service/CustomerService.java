@@ -22,11 +22,24 @@ public class CustomerService {
 
     // note: it may throw exception.
     public void addCustomer(String email, String firstName, String lastName) {
-        customers.put(email, new Customer(firstName, lastName, email));
+        Customer c;
+        while (true) {
+            try {
+                c = new Customer(firstName, lastName, email);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Please enter valid email address!");
+            }
+        }
+        customers.put(email, c);
     }
 
     public Customer getCustomer(String customerEmail) {
-        return customers.get(customerEmail);
+        Customer result = customers.get(customerEmail);
+        if (result == null) {
+            System.out.println("Customer not found!");
+        }
+        return result;
     }
 
     public Collection<Customer> getAllCustomers() {
