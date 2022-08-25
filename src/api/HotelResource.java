@@ -25,6 +25,7 @@ public class HotelResource {
         return hotelResource;
     }
 
+    // return null if the customer is not found.
     public Customer getCustomer(String email) {
         return customerService.getCustomer(email);
     }
@@ -40,11 +41,19 @@ public class HotelResource {
 
     // note: customer should already have an account.
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-        return reservationService.reserveRoom(getCustomer(customerEmail), room, checkInDate, checkOutDate);
+        Customer c = getCustomer(customerEmail);
+        if (c == null) {
+            throw new IllegalArgumentException("Please enter a valid customer email");
+        }
+        return reservationService.reserveRoom(c, room, checkInDate, checkOutDate);
     }
 
     public Collection<Reservation> getCustomerReservation(String customerEmail) {
-        return getCustomer(customerEmail).getReservations();
+        Customer c = getCustomer(customerEmail);
+        if (c == null) {
+            throw new IllegalArgumentException("Please enter a valid customer email");
+        }
+        return c.getReservations();
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {

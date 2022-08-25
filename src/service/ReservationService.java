@@ -33,6 +33,7 @@ public class ReservationService {
         return rooms.values();
     }
 
+    // return null if room not found.
     public IRoom getARoom(String roomId) {
         return rooms.get(roomId);
     }
