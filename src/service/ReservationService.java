@@ -37,6 +37,7 @@ public class ReservationService {
         return rooms.get(roomId);
     }
 
+    // We have to make sure that the room is free.
     public Reservation reserveRoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         Reservation reservation = new Reservation(customer, room, checkInDate, checkOutDate);
         reservations.add(reservation);
