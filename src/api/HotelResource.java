@@ -25,9 +25,13 @@ public class HotelResource {
         return hotelResource;
     }
 
-    // return null if the customer is not found.
+    // note: may throw exception
     public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+        Customer c = customerService.getCustomer(email);
+        if (c == null) {
+            throw new IllegalArgumentException("Please enter a valid customer email");
+        }
+        return c;
     }
 
     // note: may throw exception
@@ -35,11 +39,17 @@ public class HotelResource {
         customerService.addCustomer(email, firstName, lastName);
     }
 
+    // note: may throw exception
     public IRoom getRoom(String roomNumber) {
-        return reservationService.getARoom(roomNumber);
+        IRoom r = reservationService.getARoom(roomNumber);
+        if (r == null) {
+            throw new IllegalArgumentException("Please enter a valid customer email");
+        }
+        return r;
     }
 
     // note: customer should already have an account.
+    // note: may throw exception
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
         Customer c = getCustomer(customerEmail);
         if (c == null) {
@@ -48,6 +58,7 @@ public class HotelResource {
         return reservationService.reserveRoom(c, room, checkInDate, checkOutDate);
     }
 
+    // note: may throw exception
     public Collection<Reservation> getCustomerReservation(String customerEmail) {
         Customer c = getCustomer(customerEmail);
         if (c == null) {

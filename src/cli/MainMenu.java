@@ -157,11 +157,13 @@ public class MainMenu {
         System.out.println("Enter Email format: name@domain.com");
         String email;
         while (true) {
-            email = inputReader.nextLine();
-            if (hr.getRoom(email) != null) {
+            try {
+                email = inputReader.nextLine();
+                hr.getRoom(email);
                 break;
+            } catch (IllegalArgumentException e) {
+                e.getLocalizedMessage();
             }
-            System.out.println("Error: Invalid Input");
         }
         for (Reservation r : hr.getCustomerReservation(email)) {
             System.out.println(r);

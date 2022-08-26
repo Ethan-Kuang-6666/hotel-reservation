@@ -26,8 +26,13 @@ public class AdminResource {
         return adminResource;
     }
 
+    // note: may throw exception
     public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+        Customer c = customerService.getCustomer(email);
+        if (c == null) {
+            throw new IllegalArgumentException("Please enter a valid email address");
+        }
+        return c;
     }
 
     public void addRoom(List<IRoom> rooms) {
