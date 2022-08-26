@@ -58,5 +58,4 @@ public class AdminResource {
             System.out.println(r);
         }
     }
-
 }
