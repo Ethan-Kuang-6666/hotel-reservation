@@ -32,16 +32,16 @@ public class AdminMenu {
         while (!userInput.equals("5")) {
             switch (userInput) {
                 case "1":
-                    seeAllCustomers(ar);
+                    seeAllCustomers();
                     break;
                 case "2":
-                    seeAllRooms(ar);
+                    seeAllRooms();
                     break;
                 case "3":
                     ar.displayAllReservations();
                     break;
                 case "4":
-                    addNewRoom(inputReader, ar);
+                    addNewRoom();
                     break;
                 default:
                     System.out.println("Error: Invalid Input!");
@@ -49,25 +49,28 @@ public class AdminMenu {
             displayAdminMenu();
             userInput = inputReader.nextLine();
         }
-        MainMenu.mainMenuControl();
     }
 
 
-    private static void seeAllCustomers(AdminResource ar) {
+    private static void seeAllCustomers() {
+        AdminResource ar = AdminResource.getAdminResource();
         Collection<Customer> customers = ar.getAllCustomers();
         for (Customer c : customers) {
             System.out.println(c);
         }
     }
 
-    private static void seeAllRooms(AdminResource ar) {
+    private static void seeAllRooms() {
+        AdminResource ar = AdminResource.getAdminResource();
         Collection<IRoom> rooms = ar.getAllRooms();
         for (IRoom r : rooms) {
             System.out.println(r);
         }
     }
 
-    private static void addNewRoom(Scanner inputReader, AdminResource ar) {
+    private static void addNewRoom() {
+        Scanner inputReader = new Scanner(System.in);
+        AdminResource ar = AdminResource.getAdminResource();
         System.out.println("Enter room number");
         String roomNumber = inputReader.nextLine();
         Double price;
@@ -78,8 +81,7 @@ public class AdminMenu {
                 price = Double.parseDouble(inputPrice);
                 break;
             } catch (NumberFormatException e) {
-                e.getLocalizedMessage();
-                System.out.println("Error: Invalid input!");
+                System.out.println(e.getMessage());
             }
         }
         RoomType roomType;
@@ -101,7 +103,8 @@ public class AdminMenu {
         while (true) {
             String addAnother = inputReader.nextLine();
             if (addAnother.equals("y")) {
-                addNewRoom(inputReader, ar);
+                addNewRoom();
+                break;
             } else if (addAnother.equals("n")) {
                 break;
             } else {

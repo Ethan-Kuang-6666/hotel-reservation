@@ -114,7 +114,6 @@ public class MainMenu {
         for (IRoom room : availableRooms) {
             System.out.println(room);
         }
-
         reserveARoom(availableRooms, checkInDate, checkOutDate);
     }
 
