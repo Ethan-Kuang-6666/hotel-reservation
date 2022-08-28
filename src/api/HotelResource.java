@@ -49,22 +49,13 @@ public class HotelResource {
     }
 
     // note: customer should already have an account.
-    // note: may throw exception
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-        Customer c = getCustomer(customerEmail);
-        if (c == null) {
-            throw new IllegalArgumentException("Please enter a valid customer email");
-        }
-        return reservationService.reserveRoom(c, room, checkInDate, checkOutDate);
+    public Reservation bookARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
+        return reservationService.reserveRoom(customer, room, checkInDate, checkOutDate);
     }
 
-    // note: may throw exception
-    public Collection<Reservation> getCustomerReservation(String customerEmail) {
-        Customer c = getCustomer(customerEmail);
-        if (c == null) {
-            throw new IllegalArgumentException("Please enter a valid customer email");
-        }
-        return c.getReservations();
+    // note: Customer should already have an account.
+    public Collection<Reservation> getCustomerReservation(Customer customer) {
+        return customer.getReservations();
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {

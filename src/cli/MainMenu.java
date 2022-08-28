@@ -1,6 +1,7 @@
 package cli;
 
 import api.HotelResource;
+import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
@@ -33,13 +34,13 @@ public class MainMenu {
         while (!userInput.equals("5")) {
             switch (userInput) {
                 case "1":
-                    findAndBookAvailableRooms(inputReader,hr);
+                    findAndBookAvailableRooms();
                     break;
                 case "2":
-                    seeMyReservations(inputReader, hr);
+                    seeMyReservations();
                     break;
                 case "3":
-                    createAccount(inputReader, hr);
+                    createAccount();
                     break;
                 case "4":
                     AdminMenu.adminMenuControl();
@@ -53,15 +54,20 @@ public class MainMenu {
     }
 
 
-    private static void createAccount(Scanner inputReader, HotelResource hr) {
-        System.out.println("Enter Email format: name@domain.com");
-        String email = inputReader.nextLine();
-        System.out.println("First Name");
-        String firstName = inputReader.nextLine();
-        System.out.println("Last Name");
-        String lastName = inputReader.nextLine();
+    private static void createAccount() {
+        Scanner inputReader = new Scanner(System.in);
+        HotelResource hr = HotelResource.getHotelResource();
+        String email;
+        String firstName;
+        String lastName;
         while (true) {
             try {
+                System.out.println("Enter Email format: name@domain.com");
+                email = inputReader.nextLine();
+                System.out.println("First Name");
+                firstName = inputReader.nextLine();
+                System.out.println("Last Name");
+                lastName = inputReader.nextLine();
                 hr.createACustomer(email, firstName, lastName);
                 break;
             } catch (IllegalArgumentException ex) {
@@ -70,14 +76,18 @@ public class MainMenu {
         }
     }
 
-    private static void findAndBookAvailableRooms(Scanner inputReader, HotelResource hr) {
+    private static void findAndBookAvailableRooms() {
+        Scanner inputReader = new Scanner(System.in);
+        HotelResource hr = HotelResource.getHotelResource();
         SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
         Date checkInDate;
         Date checkOutDate;
-        System.out.println("Enter checkIn Date mm/dd/yyyy example 02/01/2020");
-        String checkInDateString = inputReader.nextLine();
+        String checkInDateString;
+        String checkOutDateString;
         while (true) {
             try {
+                System.out.println("Enter checkIn Date mm/dd/yyyy example 02/01/2020");
+                checkInDateString = inputReader.nextLine();
                 checkInDate = formatter.parse(checkInDateString);
                 break;
             } catch (ParseException e) {
@@ -85,10 +95,10 @@ public class MainMenu {
                 System.out.println("Error: Invalid Input");
             }
         }
-        System.out.println("Enter checkOut Date mm/dd/yyyy example 02/01/2020");
-        String checkOutDateString = inputReader.nextLine();
         while (true) {
             try {
+                System.out.println("Enter checkOut Date mm/dd/yyyy example 02/01/2020");
+                checkOutDateString = inputReader.nextLine();
                 checkOutDate = formatter.parse(checkOutDateString);
                 if (checkOutDate.after(checkInDate)) {
                     break;
@@ -105,11 +115,12 @@ public class MainMenu {
             System.out.println(room);
         }
 
-        reserveARoom(inputReader, hr, availableRooms, checkInDate, checkOutDate);
+        reserveARoom(availableRooms, checkInDate, checkOutDate);
     }
 
-    private static void reserveARoom(Scanner inputReader, HotelResource hr,
-                                     Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate) {
+    private static void reserveARoom(Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate) {
+        Scanner inputReader = new Scanner(System.in);
+        HotelResource hr = HotelResource.getHotelResource();
         while (true) {
             System.out.println("Would you like to book a room? y/n");
             String wantBook = inputReader.nextLine();
@@ -118,54 +129,70 @@ public class MainMenu {
                     System.out.println("Do you have an account? y/n");
                     String hasAccount = inputReader.nextLine();
                     if (hasAccount.equals("n")) {
-                        createAccount(inputReader,hr);
+                        createAccount();
                         break;
                     } else if (hasAccount.equals("y")) {
                         break;
+                    } else {
+                        System.out.println("Please enter y(yes) or n(no)");
                     }
                 }
                 break;
             } else if (wantBook.equals("n")) {
                 break;
+            } else {
+                System.out.println("Please enter y(yes) or n(no)");
             }
         }
 
-        System.out.println("Enter Email format: name@domain.com");
         String email;
         String roomNumber;
+        Customer customer;
+        IRoom targetRoom;
         while (true) {
+            System.out.println("Enter Email format: name@domain.com");
             email = inputReader.nextLine();
-            if (hr.getCustomer(email) != null) {
-                break;
-            }
-            System.out.println("Error: Invalid Input");
-        }
-        System.out.println("What room number would you like to reserve");
-        while (true) {
-            roomNumber = inputReader.nextLine();
-            if (hr.getRoom(roomNumber) != null) {
-                break;
-            }
-            System.out.println("Error: Invalid Input");
-        }
-
-        System.out.println(hr.bookARoom(email, hr.getRoom(roomNumber), checkInDate, checkOutDate));
-    }
-
-
-    private static void seeMyReservations(Scanner inputReader, HotelResource hr) {
-        System.out.println("Enter Email format: name@domain.com");
-        String email;
-        while (true) {
             try {
-                email = inputReader.nextLine();
-                hr.getRoom(email);
+                customer = hr.getCustomer(email);
                 break;
             } catch (IllegalArgumentException e) {
                 e.getLocalizedMessage();
             }
         }
-        for (Reservation r : hr.getCustomerReservation(email)) {
+        while (true) {
+            System.out.println("What room number would you like to reserve");
+            roomNumber = inputReader.nextLine();
+            try {
+                targetRoom = hr.getRoom(roomNumber);
+                if (!availableRooms.contains(targetRoom)) {
+                    throw new IllegalArgumentException("Please choose a valid room!");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                e.getLocalizedMessage();
+            }
+        }
+
+        System.out.println(hr.bookARoom(customer, targetRoom, checkInDate, checkOutDate));
+    }
+
+
+    private static void seeMyReservations() {
+        Scanner inputReader = new Scanner(System.in);
+        HotelResource hr = HotelResource.getHotelResource();
+        System.out.println("Enter Email format: name@domain.com");
+        String email;
+        Customer customer;
+        while (true) {
+            email = inputReader.nextLine();
+            try {
+                customer = hr.getCustomer(email);
+                break;
+            } catch (IllegalArgumentException e) {
+                e.getLocalizedMessage();
+            }
+        }
+        for (Reservation r : hr.getCustomerReservation(customer)) {
             System.out.println(r);
         }
     }
