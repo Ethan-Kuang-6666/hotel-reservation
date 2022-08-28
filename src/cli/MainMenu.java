@@ -71,7 +71,7 @@ public class MainMenu {
                 hr.createACustomer(email, firstName, lastName);
                 break;
             } catch (IllegalArgumentException ex) {
-                ex.getLocalizedMessage();
+                System.out.println(ex.getMessage());
             }
         }
     }
@@ -156,7 +156,7 @@ public class MainMenu {
                 customer = hr.getCustomer(email);
                 break;
             } catch (IllegalArgumentException e) {
-                e.getLocalizedMessage();
+                System.out.println(e.getMessage());
             }
         }
         while (true) {
@@ -169,7 +169,7 @@ public class MainMenu {
                 }
                 break;
             } catch (IllegalArgumentException e) {
-                e.getLocalizedMessage();
+                System.out.println(e.getMessage());
             }
         }
 
@@ -189,7 +189,7 @@ public class MainMenu {
                 customer = hr.getCustomer(email);
                 break;
             } catch (IllegalArgumentException e) {
-                e.getLocalizedMessage();
+                System.out.println(e.getMessage());
             }
         }
         for (Reservation r : hr.getCustomerReservation(customer)) {
