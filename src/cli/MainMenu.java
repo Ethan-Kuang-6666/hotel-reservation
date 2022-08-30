@@ -79,7 +79,7 @@ public class MainMenu {
     private static void findAndBookAvailableRooms() {
         Scanner inputReader = new Scanner(System.in);
         HotelResource hr = HotelResource.getHotelResource();
-        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         Date checkInDate;
         Date checkOutDate;
         String checkInDateString;
