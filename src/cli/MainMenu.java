@@ -7,6 +7,7 @@ import model.Reservation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
@@ -111,9 +112,6 @@ public class MainMenu {
             }
         }
         Collection<IRoom> availableRooms = hr.findARoom(checkInDate, checkOutDate);
-        for (IRoom room : availableRooms) {
-            System.out.println(room);
-        }
         reserveARoom(availableRooms, checkInDate, checkOutDate);
     }
 
@@ -159,6 +157,10 @@ public class MainMenu {
             }
         }
         while (true) {
+            if (availableRooms.isEmpty()) {
+                Calendar calendar = Calendar.getInstance();
+
+            }
             System.out.println("What room number would you like to reserve");
             roomNumber = inputReader.nextLine();
             try {

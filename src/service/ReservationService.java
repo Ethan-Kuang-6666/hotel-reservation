@@ -59,7 +59,7 @@ public class ReservationService {
         return results;
     }
 
-    public Collection<Reservation> getCustomersReservation(Customer customer) {
+    Collection<Reservation> getCustomersReservation(Customer customer) {
         return customer.getReservations();
     }
 
@@ -67,7 +67,7 @@ public class ReservationService {
         return reservations;
     }
 
-    public void printAllReservation() {
+    void printAllReservation() {
         for (Reservation r : reservations) {
             System.out.println(r);
         }

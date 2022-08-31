@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,5 +47,17 @@ public class Customer {
     public String toString() {
         return "First Name: " + firstName + " Last Name: " + lastName +
                 " Email: " + email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer customer)) return false;
+        return firstName.equals(customer.firstName) && lastName.equals(customer.lastName) && getEmail().equals(customer.getEmail()) && getReservations().equals(customer.getReservations());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, getEmail(), getReservations());
     }
 }
