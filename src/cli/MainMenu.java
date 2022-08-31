@@ -112,10 +112,23 @@ public class MainMenu {
             }
         }
         Collection<IRoom> availableRooms = hr.findARoom(checkInDate, checkOutDate);
-        reserveARoom(availableRooms, checkInDate, checkOutDate);
+        if (availableRooms.isEmpty()) {
+            Calendar calendar = Calendar.getInstance();
+            // Update the check-in date
+            calendar.setTime(checkInDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 7);
+            checkInDate = calendar.getTime();
+            // Update the check-out date
+            calendar.setTime(checkOutDate);
+            calendar.add(Calendar.DAY_OF_MONTH, 7);
+            checkOutDate = calendar.getTime();
+            reserveARoom(availableRooms, checkInDate, checkOutDate, true);
+        } else {
+            reserveARoom(availableRooms, checkInDate, checkOutDate, false);
+        }
     }
 
-    private static void reserveARoom(Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate) {
+    private static void reserveARoom(Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate, boolean isRecommended) {
         Scanner inputReader = new Scanner(System.in);
         HotelResource hr = HotelResource.getHotelResource();
         while (true) {
@@ -157,9 +170,12 @@ public class MainMenu {
             }
         }
         while (true) {
-            if (availableRooms.isEmpty()) {
-                Calendar calendar = Calendar.getInstance();
-
+            if (isRecommended) {
+                System.out.println("No rooms available in your time period.");
+                System.out.println("Showing available rooms from " + checkInDate + " to " + checkOutDate + ".");
+            }
+            for (IRoom r : availableRooms) {
+                System.out.println(r);
             }
             System.out.println("What room number would you like to reserve");
             roomNumber = inputReader.nextLine();
