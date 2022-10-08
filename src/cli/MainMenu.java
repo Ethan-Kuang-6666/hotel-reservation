@@ -131,6 +131,9 @@ public class MainMenu {
     private static void reserveARoom(Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate, boolean isRecommended) {
         Scanner inputReader = new Scanner(System.in);
         HotelResource hr = HotelResource.getHotelResource();
+        for (IRoom r : availableRooms) {
+            System.out.println(r);
+        }
         while (true) {
             System.out.println("Would you like to book a room? y/n");
             String wantBook = inputReader.nextLine();
@@ -174,9 +177,6 @@ public class MainMenu {
                 System.out.println("No rooms available in your time period.");
                 System.out.println("Showing available rooms from " + checkInDate + " to " + checkOutDate + ".");
             }
-            for (IRoom r : availableRooms) {
-                System.out.println(r);
-            }
             System.out.println("What room number would you like to reserve");
             roomNumber = inputReader.nextLine();
             try {
@@ -189,7 +189,6 @@ public class MainMenu {
                 System.out.println(e.getMessage());
             }
         }
-
         System.out.println(hr.bookARoom(customer, targetRoom, checkInDate, checkOutDate));
     }
 
