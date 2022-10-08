@@ -152,7 +152,7 @@ public class MainMenu {
                 }
                 break;
             } else if (wantBook.equals("n")) {
-                break;
+                return;
             } else {
                 System.out.println("Please enter y(yes) or n(no)");
             }
@@ -176,6 +176,9 @@ public class MainMenu {
             if (isRecommended) {
                 System.out.println("No rooms available in your time period.");
                 System.out.println("Showing available rooms from " + checkInDate + " to " + checkOutDate + ".");
+                for (IRoom r : availableRooms) {
+                    System.out.println(r);
+                }
             }
             System.out.println("What room number would you like to reserve");
             roomNumber = inputReader.nextLine();
