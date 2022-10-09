@@ -47,7 +47,8 @@ public class ReservationService {
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
-        Collection<IRoom> results = rooms.values();
+        Collection<IRoom> allRooms = rooms.values();
+        Collection<IRoom> results = new ArrayList<>(allRooms);
         for (Reservation reservation : reservations) {
             if (results.contains(reservation.getRoom())) {
                 if (checkInDate.before(reservation.getCheckOutDate()) &&

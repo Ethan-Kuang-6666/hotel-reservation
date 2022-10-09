@@ -132,8 +132,12 @@ public class MainMenu {
     private static void reserveARoom(Collection<IRoom> availableRooms, Date checkInDate, Date checkOutDate, boolean isRecommended) {
         Scanner inputReader = new Scanner(System.in);
         HotelResource hr = HotelResource.getHotelResource();
-        for (IRoom r : availableRooms) {
-            System.out.println(r);
+        if (!isRecommended) {
+            for (IRoom r : availableRooms) {
+                System.out.println(r);
+            }
+        } else {
+            System.out.println("No Rooms available. Alternative options will be shown!");
         }
         while (true) {
             System.out.println("Would you like to book a room? y/n");
