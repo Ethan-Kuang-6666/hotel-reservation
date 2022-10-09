@@ -122,6 +122,7 @@ public class MainMenu {
             calendar.setTime(checkOutDate);
             calendar.add(Calendar.DAY_OF_MONTH, 7);
             checkOutDate = calendar.getTime();
+            availableRooms = hr.findARoom(checkInDate, checkOutDate);
             reserveARoom(availableRooms, checkInDate, checkOutDate, true);
         } else {
             reserveARoom(availableRooms, checkInDate, checkOutDate, false);
